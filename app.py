@@ -26,7 +26,7 @@ st.write(f"🔹 Starting stocks: {len(df)}")
 stage1 = df[
     (df["ROCE"] >= min_roce) &
     (df["ROE"] >= min_roe) &
-    (df["REV"] >= min_growth)
+    (df["REV growth"] >= min_growth)
 ]
 st.write(f"🔹 After quality filter: {len(stage1)}")
 
