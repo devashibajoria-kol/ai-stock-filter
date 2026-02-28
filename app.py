@@ -32,7 +32,7 @@ st.write(f"🔹 After quality filter: {len(stage1)}")
 
 # Stage 2 – Balance sheet
 stage2 = stage1[
-    stage1["DebtEquity"] <= max_debt
+    stage1["DebttoEquity"] <= max_debt
 ]
 st.write(f"🔹 After balance sheet filter: {len(stage2)}")
 
@@ -42,7 +42,7 @@ stage2["AI_Score"] = (
     stage2["ROCE"] * 0.4 +
     stage2["ROE"] * 0.3 +
     stage2["RevenueGrowth"] * 0.3 -
-    stage2["DebtEquity"] * 10
+    stage2["DebttoEquity"] * 10
 )
 
 final = stage2.sort_values("AI_Score", ascending=False)
