@@ -10,6 +10,12 @@ def load_data():
 
 df = load_data()
 
+# 🔧 STANDARDISE COLUMN NAMES (CRITICAL FIX)
+df = df.rename(columns={
+    "Debt to equity": "DebtEquity",
+    "REV growth": "RevenueGrowth"
+})
+
 st.sidebar.header("📌 Your Filters")
 
 min_roce = st.sidebar.slider("Minimum ROCE (%)", 0, 50, 15)
@@ -22,17 +28,17 @@ st.subheader("🧩 Funnel Progress")
 # Stage 0 – Starting universe
 st.write(f"🔹 Starting stocks: {len(df)}")
 
-# Stage 1 – Quality
+# Stage 1 – Quality filter
 stage1 = df[
     (df["ROCE"] >= min_roce) &
     (df["ROE"] >= min_roe) &
-    (df["REV growth"] >= min_growth)
+    (df["RevenueGrowth"] >= min_growth)
 ]
 st.write(f"🔹 After quality filter: {len(stage1)}")
 
-# Stage 2 – Balance sheet
+# Stage 2 – Balance sheet filter
 stage2 = stage1[
-    stage1["DebttoEquity"] <= max_debt
+    stage1["DebtEquity"] <= max_debt
 ]
 st.write(f"🔹 After balance sheet filter: {len(stage2)}")
 
@@ -42,7 +48,7 @@ stage2["AI_Score"] = (
     stage2["ROCE"] * 0.4 +
     stage2["ROE"] * 0.3 +
     stage2["RevenueGrowth"] * 0.3 -
-    stage2["DebttoEquity"] * 10
+    stage2["DebtEquity"] * 10
 )
 
 final = stage2.sort_values("AI_Score", ascending=False)
